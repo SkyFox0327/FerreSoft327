@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Inventario</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI';
+    display: flex;
+    background: #f1f5f9;
+}
+
+.sidebar {
+    width: 250px;
+    background: #1e293b;
+    color: white;
+    height: 100vh;
+    padding: 20px;
+}
+
+.sidebar a {
+    display: block;
+    margin: 12px 0;
+    color: white;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+.sidebar a.active, .sidebar a:hover {
+    background: #3b82f6;
+}
+
+.content {
+    flex: 1;
+    padding: 25px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn {
+    background: #3b82f6;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.search-box {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.table {
+    width: 100%;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 12px;
+}
+
+.table th {
+    background: #e2e8f0;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: white;
+}
+
+.ok { background: #22c55e; }
+.low { background: #ef4444; }
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #f1f5f9;
+    padding: 25px;
+    width: 320px;
+    border-radius: 12px;
+}
+
+.input-group {
+    background: #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.input-group input, .input-group select {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.cancel {
+    background: #94a3b8;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>🔧 FerreSoft</h2>
+    <a href="/inicio">Dashboard</a>
+    <a class="active">Inventario</a>
+</div>
+
+<div class="content">
+
+<div class="header">
+    <h1>Inventario</h1>
+    <button class="btn" onclick="abrirModal()">+ Nuevo</button>
+</div>
+
+<form method="GET" class="search-box">
+    <input name="q" placeholder="Buscar..." value="{{ busqueda }}">
+    <button class="btn">Buscar</button>
+</form>
+
+<table class="table">
+<tr>
+<th>ID</th><th>Nombre</th><th>Categoría</th><th>Precio</th>
+<th>Stock</th><th>Min</th><th>Estado</th><th>Acciones</th>
+</tr>
+
+{% for p in productos %}
+<tr>
+<td>{{ p.id }}</td>
+<td>{{ p.nombre }}</td>
+<td>{{ p.categoria }}</td>
+<td>${{ p.precio }}</td>
+<td>{{ p.stock }}</td>
+<td>{{ p.min }}</td>
+
+<td>
+{% if p.stock < p.min %}
+<span class="badge low">Bajo</span>
+{% else %}
+<span class="badge ok">OK</span>
+{% endif %}
+</td>
+
+<td>
+<button onclick="editarProducto('{{p.id}}','{{p.nombre}}','{{p.precio}}','{{p.stock}}','{{p.min}}','{{p.categoria}}')" class="btn">Editar</button>
+<a href="/inventario/eliminar/{{p.id}}">Eliminar</a>
+</td>
+</tr>
+{% endfor %}
+</table>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+<div class="modal-content">
+
+<h2 id="tituloModal">Nuevo Producto</h2>
+
+<form method="POST" action="/inventario/crear" id="formulario">
+
+<div class="input-group"><input name="nombre" id="nombre" placeholder="Nombre"></div>
+<div class="input-group"><input name="precio" id="precio" placeholder="Precio"></div>
+<div class="input-group"><input name="stock" id="stock" placeholder="Stock"></div>
+<div class="input-group"><input name="min" id="min" placeholder="Stock mínimo"></div>
+
+<div class="input-group">
+<select name="categoria" id="categoria">
+<option>Láminas</option>
+<option>Tubos</option>
+<option>Pinturas</option>
+<option>Accesorios</option>
+</select>
+</div>
+
+<div class="modal-buttons">
+<button class="btn">Guardar</button>
+<button type="button" class="btn cancel" onclick="cerrarModal()">Cancelar</button>
+</div>
+
+</form>
+
+</div>
+</div>
+
+<script>
+function abrirModal() {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("formulario").reset();
+    document.getElementById("formulario").action = "/inventario/crear";
+    document.getElementById("tituloModal").innerText = "Nuevo Producto";
+}
+
+function cerrarModal() {
+    document.getElementById("modal").style.display = "none";
+}
+
+function editarProducto(id, nombre, precio, stock, min, categoria) {
+    abrirModal();
+    document.getElementById("tituloModal").innerText = "Editar Producto";
+    document.getElementById("formulario").action = "/inventario/editar/" + id;
+
+    document.getElementById("nombre").value = nombre;
+    document.getElementById("precio").value = precio;
+    document.getElementById("stock").value = stock;
+    document.getElementById("min").value = min;
+    document.getElementById("categoria").value = categoria;
+}
+</script>
+
+</body>
+</html>

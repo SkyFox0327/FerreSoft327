@@ -1,0 +1,17 @@
+<h2>Editar Producto</h2>
+
+<form method="POST">
+    <input name="nombre" value="{{ producto.nombre }}"><br>
+    <input name="precio" value="{{ producto.precio }}"><br>
+    <input name="stock" value="{{ producto.stock }}"><br>
+    <input name="min" value="{{ producto.min }}"><br>
+
+    <select name="categoria">
+        <option {% if producto.categoria == 'Láminas' %}selected{% endif %}>Láminas</option>
+        <option {% if producto.categoria == 'Tubos' %}selected{% endif %}>Tubos</option>
+        <option {% if producto.categoria == 'Pinturas' %}selected{% endif %}>Pinturas</option>
+        <option {% if producto.categoria == 'Accesorios' %}selected{% endif %}>Accesorios</option>
+    </select><br><br>
+
+    <button>Actualizar</button>
+</form>

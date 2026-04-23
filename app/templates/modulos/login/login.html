@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Login FerreSoft</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #1e293b, #334155);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CONTENEDOR */
+.container {
+    text-align: center;
+    color: white;
+}
+
+/* LOGO */
+.logo {
+    width: 60px;
+    height: 60px;
+    background: #3b82f6;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px;
+    font-size: 28px;
+}
+
+/* CARD */
+.card {
+    background: #f1f5f9;
+    color: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    margin-top: 20px;
+}
+
+/* INPUT */
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #e2e8f0;
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.input-group input {
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+}
+
+/* BOTON */
+button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+}
+
+/* ERROR */
+.error {
+    color: red;
+    margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">🔧</div>
+    <h1>FerreSoft</h1>
+    <p>Sistema de Gestión de Ferretería</p>
+
+    <div class="card">
+        <h2>Iniciar Sesión</h2>
+
+        <form method="POST" action="/login">
+
+            <div class="input-group">
+                <input type="text" name="usuario" placeholder="Correo electrónico" required>
+            </div>
+
+            <div class="input-group">
+                <input type="password" name="password" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit">Iniciar Sesión</button>
+
+        </form>
+
+        {% if error %}
+        <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+</div>
+
+</body>
+</html>
