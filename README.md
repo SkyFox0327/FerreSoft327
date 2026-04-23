@@ -1,2 +1,28 @@
-# FerreSoft327
-FerreSoft es un sistema para gestionar inventario y facturación electrónica en una ferretería, permitiendo controlar productos y generar facturas de forma eficiente.
+# 🔧 FerreSoft - Sistema de Inventario y Facturación
+
+## 📌 Descripción
+Sistema desarrollado en Python con Flask para la gestión de inventario y facturación electrónica para ferretería metálica.
+
+## 🚀 Funcionalidades
+- Login de usuarios
+- Dashboard interactivo
+- Módulo de inventario (CRUD)
+- Buscador de productos
+- Control de stock mínimo
+- Categorías de productos
+
+## 🛠 Tecnologías
+- Python
+- Flask
+- HTML/CSS
+- JavaScript
+
+## 📂 Estructura
+app/
+ ├── routes/
+ ├── models/
+ ├── templates/
+ └── static/
+
+## 🎯 Autor
+JCN.SAS
